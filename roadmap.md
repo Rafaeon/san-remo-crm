@@ -1,7 +1,9 @@
 # San Remo CRM
 
 - [x] Etapa 1: análise, identidade visual, login, autenticação e navegação protegida inicial implementados; verificações públicas e testes concluídos.
-- [ ] Validar entrada autenticada, persistência, logout e e-mails (aguarda conta autorizada; nenhum usuário existe no Cloud).
-- [ ] Validar Etapa 1 com o usuário antes de implementar as demais etapas (aguarda validação).
+- [x] Login validado pelo usuário; Etapa 1 aprovada.
+- [ ] Etapa 2: modelagem, perfis automáticos, papéis separados, RLS e consulta segura do próprio perfil.
+- [ ] Etapa 2: testes de permissões e validação do perfil no navegador.
+- [ ] Aguardar validação do usuário antes da Etapa 3.
 
-Etapas 2–7 permanecem fora do escopo atual.
+Etapas 3–7 permanecem fora do escopo atual. E-mails e provedores externos não foram validados integralmente.
