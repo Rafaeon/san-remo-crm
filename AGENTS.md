@@ -33,5 +33,8 @@ use the editor.
 - Keep pages in TanStack file routes and shared presentation in components; the router owns navigation, not a page switcher.
 - Keep authentication calls in a dedicated service and one root identity subscriber; this prevents conflicting session listeners.
 - Gate signed-in pages under the client-only authenticated layout with getUser; browser sessions are unavailable to SSR.
-- Resolve roles only from protected database role records when Stage 2 is implemented; presentation metadata never authorizes access.
+- Resolve roles only from protected user_roles records; presentation metadata never authorizes access and no browser role writes are allowed.
 - Keep environment selection deployment-only with no database chooser; a visual label does not establish backend isolation.
+- Load account data through authenticated server functions with identity-keyed Query caches; query as the caller under RLS and accept only validated profile fields.
+- Enforce broker lead updates with RLS plus a database trigger restricting changed columns; row policies alone do not prevent unauthorized field changes.
+- Leave new and existing accounts unassigned until an authorized operator provisions their role; automatic profile creation must never assign privileges from metadata.

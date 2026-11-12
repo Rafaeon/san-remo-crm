@@ -200,4 +200,7 @@
 @media(min-width:1500px) { .auth-side { padding-inline:80px; }.auth-main { max-width:400px; }.photo-content { max-width:520px; }.photo-content h2 { font-size:44px; } }
 @media(max-width:900px) { .auth-side { padding:28px; }.photo-content { left:30px; right:30px; }.photo-content h2 { font-size:32px; }.photo-top,.photo-bottom { left:30px; right:30px; }.brand-name { font-size:17px; }.brand-caption { font-size:7px; } }
 @media(max-width:680px) { .auth-page { display:block; }.auth-visual { display:none; }.auth-side { min-height:100svh; padding:22px 26px; }.auth-main { padding:32px 0; }.auth-main .brand { margin-bottom:35px; }.auth-footer { flex-wrap:wrap; justify-content:center; }.account-header { padding:20px; gap:20px; flex-wrap:wrap; }.account-content { margin-top:40px; }.account-status { flex-wrap:wrap; }.account-footer { padding:24px; } }
+.profile-form { display:flex; flex-wrap:wrap; align-items:flex-end; gap:16px; padding:32px 0; border-bottom:1px solid var(--border); }
+.profile-form > div { flex:1; min-width:200px; }
+.profile-form > p { width:100%; font-size:12px; }
 @media(prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none !important; transition:none !important; } }
