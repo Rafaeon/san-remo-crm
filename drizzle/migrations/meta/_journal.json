@@ -1,5 +1,13 @@
 {
   "version": "7",
   "dialect": "postgresql",
-  "entries": []
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1794506367786,
+      "tag": "0000_san_remo_profiles_roles_and_crm_security",
+      "breakpoints": true
+    }
+  ]
 }
