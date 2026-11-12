@@ -10,3 +10,8 @@
 - QR Code não comprova localização física nem impede compartilhamento por um usuário autorizado.
 - Leitura pela câmera do celular; não há leitor interno. Ao testar com celular externo, o endereço do app precisa estar acessível àquele aparelho.
 - Distribuição de leads e histórico permanecem na Etapa 5, aguardando validação.
+
+## Validação
+- 37 testes aprovados, incluindo 21 verificações de acesso e presença no banco com contas fictícias temporárias.
+- Navegador: leitura sem login → login → confirmação, renovação sem mudar posição, consulta após recarga, lista do gestor, erro de código inválido e troca automática no próximo intervalo.
+- Computador e celulares sem transbordamento horizontal; nenhum erro de execução observado. Contas e presenças de teste removidas ao final.
