@@ -1,23 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-
-// The home route ships no og:image, so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
+import { AuthScreen } from '@/components/auth-screen';
 export const Route = createFileRoute("/")({
-  component: Index,
+  head: () => ({ meta: [{ title: 'San Remo CRM | Login' }, { name: 'description', content: 'Acesso seguro ao CRM imobiliário da San Remo Imóveis.' }, { property: 'og:title', content: 'San Remo CRM | Login' }, { property: 'og:description', content: 'Conecte-se à equipe San Remo Imóveis.' }, { property: 'og:type', content: 'website' }, { name: 'twitter:card', content: 'summary_large_image' }] }),
+  component: AuthScreen,
 });
-
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
-}

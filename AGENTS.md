@@ -28,3 +28,10 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Application architecture
+- Keep pages in TanStack file routes and shared presentation in components; the router owns navigation, not a page switcher.
+- Keep authentication calls in a dedicated service and one root identity subscriber; this prevents conflicting session listeners.
+- Gate signed-in pages under the client-only authenticated layout with getUser; browser sessions are unavailable to SSR.
+- Resolve roles only from protected database role records when Stage 2 is implemented; presentation metadata never authorizes access.
+- Keep environment selection deployment-only with no database chooser; a visual label does not establish backend isolation.
