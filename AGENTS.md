@@ -38,3 +38,6 @@ use the editor.
 - Load account data through authenticated server functions with identity-keyed Query caches; query as the caller under RLS and accept only validated profile fields.
 - Enforce broker lead updates with RLS plus a database trigger restricting changed columns; row policies alone do not prevent unauthorized field changes.
 - Leave new and existing accounts unassigned until an authorized operator provisions their role; automatic profile creation must never assign privileges from metadata.
+- Keep CRM reads and mutations in authenticated server functions with role validation and RLS; never use admin clients for ordinary lead operations.
+- Paginate all CRM list reads and invalidate list/detail caches together after mutations; avoid silent Data API truncation and stale stage counts.
+- Keep account editing at /account and the CRM at /dashboard; preserve access to the existing profile workflow.
