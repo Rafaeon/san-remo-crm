@@ -13,7 +13,7 @@ function Dashboard() {
   const { user } = Route.useRouteContext();
   const navigate = useNavigate();
   const client = useQueryClient();
-  const name = typeof user.user_metadata.display_name === 'string' ? user.user_metadata.display_name : 'Boas-vindas';
+  const name = typeof user.user_metadata['display_name'] === 'string' ? user.user_metadata['display_name'] : 'Boas-vindas';
   async function logout() {
     await client.cancelQueries(); client.clear();
     await supabase.auth.signOut();
