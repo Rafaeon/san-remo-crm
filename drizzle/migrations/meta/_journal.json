@@ -15,6 +15,13 @@
       "when": 1794508738687,
       "tag": "0001_explicitly_restrict_anon_and_internal_writes",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794509888597,
+      "tag": "0002_secure_qr_attendance_and_continuous_queue",
+      "breakpoints": true
     }
   ]
 }

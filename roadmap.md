@@ -7,6 +7,9 @@
 - [x] Etapa 2 aprovada; conta atual liberada como gestor com autorização explícita.
 - [x] Etapa 3: painel, Kanban, criação/edição, detalhes, observações e reservatório.
 - [x] Etapa 3: 25 testes aprovados e fluxos completos de gestor/corretor no navegador.
-- [ ] Aguardar validação antes da Etapa 4.
+- [x] Etapa 3 aprovada pelo usuário.
+- [x] Etapa 4: QR Code vigente por cinco minutos, confirmação autenticada por cinco horas e fila contínua segura.
+- [x] Etapa 4: 37 testes aprovados; renovação, retorno após expiração, concorrência e fluxos de gestor/corretor verificados, incluindo troca automática do QR no navegador.
+- [ ] Aguardar validação antes da Etapa 5.
 
-Etapas 4–7 permanecem fora do escopo atual. E-mails e provedores externos não foram validados integralmente.
+Etapas 5–7 permanecem fora do escopo atual. E-mails e provedores externos não foram validados integralmente.
