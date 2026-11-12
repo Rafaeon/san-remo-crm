@@ -20,6 +20,7 @@ export type Database = {
           expires_at: string
           id: string
           token_hash: string
+          token_value: string | null
           valid_from: string
         }
         Insert: {
@@ -27,6 +28,7 @@ export type Database = {
           expires_at: string
           id?: string
           token_hash: string
+          token_value?: string | null
           valid_from: string
         }
         Update: {
@@ -34,6 +36,7 @@ export type Database = {
           expires_at?: string
           id?: string
           token_hash?: string
+          token_value?: string | null
           valid_from?: string
         }
         Relationships: []
@@ -300,6 +303,23 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      confirm_broker_attendance: {
+        Args: { p_token: string }
+        Returns: {
+          confirmed_at: string
+          expires_at: string
+          queue_position: number
+          renewed: boolean
+        }[]
+      }
+      current_attendance_qr: {
+        Args: never
+        Returns: {
+          expires_at: string
+          server_now: string
+          token: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
