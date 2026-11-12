@@ -320,6 +320,17 @@ export type Database = {
           token: string
         }[]
       }
+      distribute_next_lead: {
+        Args: never
+        Returns: {
+          broker_id: string
+          broker_name: string
+          distributed_at: string
+          lead_id: string
+          lead_name: string
+          operation_id: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
