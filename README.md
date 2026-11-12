@@ -1,6 +1,6 @@
 # San Remo CRM
 
-CRM imobiliário para San Remo Imóveis. **Etapas 1 e 2 implementadas; Etapa 3 aguarda validação.**
+CRM imobiliário para San Remo Imóveis. **Etapas 1–3 implementadas; Etapa 4 aguarda validação.**
 
 React 19, TypeScript, TanStack Start, Vite, Tailwind v4 e Lovable Cloud.
 
@@ -12,8 +12,9 @@ Instalar Bun e Node compatível com Vite. Executar `bun install`, copiar `.env.e
 
 Ver [análise, modelagem proposta, arquivos, configurações, pendências e validação](docs/fundacao.md).
 Ver [estrutura aplicada, segurança e testes da Etapa 2](docs/seguranca.md).
+Ver [CRM, arquivos e validação da Etapa 3](docs/crm.md).
 
-Estrutura de perfis, papéis, CRM, presença/fila e histórico criada com RLS e migrations versionadas. Interface de CRM, presença e distribuição ainda não implementada. Novas contas ficam sem papel; liberação administrativa deve ser explícita. Nenhuma conta existente recebeu privilégios automaticamente.
+CRM com painel, Kanban, cadastro/edição, detalhes, observações e reservatório. Estrutura protegida por RLS e migrations versionadas. Presença e distribuição automática ainda não implementadas. Novas contas ficam sem papel; a conta atual recebeu gestor somente após autorização explícita.
 
 ## Ambientes e publicação
 
