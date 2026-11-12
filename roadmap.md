@@ -10,6 +10,8 @@
 - [x] Etapa 3 aprovada pelo usuário.
 - [x] Etapa 4: QR Code vigente por cinco minutos, confirmação autenticada por cinco horas e fila contínua segura.
 - [x] Etapa 4: 37 testes aprovados; renovação, retorno após expiração, concorrência e fluxos de gestor/corretor verificados, incluindo troca automática do QR no navegador.
-- [ ] Aguardar validação antes da Etapa 5.
+- [x] Etapa 5: distribuição transacional por fila com histórico imutável e ação Distribuir lead no painel.
+- [ ] Etapa 5: testes de concorrência, reservatório vazio e fila vazia; validação no navegador.
+- [ ] Aguardar validação do usuário antes da Etapa 6.
 
-Etapas 5–7 permanecem fora do escopo atual. E-mails e provedores externos não foram validados integralmente.
+Etapas 6–7 permanecem fora do escopo atual. E-mails e provedores externos não foram validados integralmente.

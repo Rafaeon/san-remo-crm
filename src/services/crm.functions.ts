@@ -72,6 +72,11 @@ export const getLeadDetail = createServerFn({ method: 'GET' }).middleware([requi
     }
     return { lead: lead.data, observations };
   });
+export const distributeNextLead = createServerFn({ method: 'POST' }).middleware([requireSupabaseAuth]).handler(async ({ context }) => {
+  const result = await context.supabase.rpc('distribute_next_lead').single();
+  if (result.error) throw new Error(result.error.code === '42501' ? 'Apenas gestores podem distribuir leads.' : result.error.code === 'P0002' ? 'Nenhum lead disponível para distribuição.' : result.error.code === '22023' ? 'Nenhum corretor disponível na fila de presença.' : 'Não foi possível distribuir o lead. Tente novamente.');
+  return result.data;
+});
 export const addObservation = createServerFn({ method: 'POST' }).middleware([requireSupabaseAuth])
   .inputValidator((input: unknown) => observationSchema.parse(input)).handler(async ({ data, context }) => {
     await roleOf(context.supabase, context.userId);
