@@ -41,3 +41,5 @@ use the editor.
 - Keep CRM reads and mutations in authenticated server functions with role validation and RLS; never use admin clients for ordinary lead operations.
 - Paginate all CRM list reads and invalidate list/detail caches together after mutations; avoid silent Data API truncation and stale stage counts.
 - Keep account editing at /account and the CRM at /dashboard; preserve access to the existing profile workflow.
+- Attendance RPCs use database time and a shared transaction advisory lock; rotation, renewal and queue re-entry must remain atomic and caller-scoped.
+- Keep QR payload disclosure manager-only and confirmation broker-only; the public presence page stores a fragment token per tab and restores only a fixed same-origin sign-in destination.
