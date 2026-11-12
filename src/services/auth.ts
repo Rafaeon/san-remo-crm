@@ -15,6 +15,7 @@ export function authErrorMessage(error: unknown) {
   const message = error instanceof Error ? error.message : '';
   if (message.includes('Invalid login')) return 'E-mail ou senha incorretos. Verifique e tente novamente.';
   if (message.includes('Email not confirmed')) return 'Confirme seu e-mail antes de entrar.';
+  if (message.includes('email address is not allowed')) return 'Use um e-mail válido que possa receber a confirmação de cadastro.';
   if (message.includes('rate limit') || message.includes('Too many')) return 'Muitas tentativas. Aguarde alguns minutos e tente novamente.';
   return 'Não foi possível concluir. Tente novamente em instantes.';
 }

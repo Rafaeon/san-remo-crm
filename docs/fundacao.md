@@ -101,6 +101,8 @@ Atualizados: `src/styles.css`, `src/routes/index.tsx`, `src/routes/__root.tsx`, 
 
 Validação desta etapa pelo usuário. Tabelas profiles e user_roles, backfill, RLS e navegação funcional por papel aguardam Etapa 2. Contas finais fictícias de gestor/corretor aguardam permissões e entrega. GitHub, dev/hlg/prd, isolamento de bancos, Vercel e URLs reais aguardam configuração futura. E-mails de confirmação/recuperação e provedores externos dependem da validação de entrega real.
 
+Verificação realizada: seis testes passaram; aplicação compilou sem erros; fotografia carregou; login inválido mostrou erro; acesso direto a `/dashboard` redirecionou a `/auth`; link de recuperação inválido mostrou orientação; celular sem transbordamento horizontal; nenhum erro de execução observado. O cadastro de teste com domínio reservado `example.com` foi rejeitado pelo serviço, sem criar usuário. Não há contas para testar sessão autenticada: cadastro/entrada completos, persistência, logout e entrega de e-mails ainda aguardam uma conta autorizada. Use dados de apresentação fictícios e um e-mail controlado por você para confirmação, ou crie uma conta fictícia pelo painel Users.
+
 ## IA e revisão
 
 Lovable foi usado para análise, código, documentação e testes; geração de imagens para a fotografia de identidade. Revisão por testes automatizados, inspeção de rotas/segurança e navegador. Nenhuma imagem representa um imóvel real. As regras de negócio posteriores não foram simuladas nem substituídas por controles no navegador.
