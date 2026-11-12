@@ -51,8 +51,8 @@ describe.skipIf(!enabled)('Live database access boundaries', () => {
     manager = await account('gestor'); broker = await account('corretor'); otherBroker = await account('corretor');
     pending = await account(undefined, { role: 'gestor' });
     const response = await manager.from('leads').insert([
-      { name: 'Lead fictício A', phone: '11999990001', source: 'Teste', property_interest: 'Apartamento fictício', responsible_id: users[1] },
-      { name: 'Lead fictício B', phone: '11999990002', source: 'Teste', property_interest: 'Casa fictícia', responsible_id: users[2] },
+      { name: 'Lead fictício A', phone: '11999990001', source: 'Teste', property_interest: 'Apartamento fictício', responsible_id: users[1] ?? '' },
+      { name: 'Lead fictício B', phone: '11999990002', source: 'Teste', property_interest: 'Casa fictícia', responsible_id: users[2] ?? '' },
       { name: 'Lead fictício C', phone: '11999990003', source: 'Teste', property_interest: 'Terreno fictício' },
     ]).select('id');
     if (response.error || response.data.length !== 3) throw new Error('Unable to prepare test leads');
@@ -88,7 +88,7 @@ describe.skipIf(!enabled)('Live database access boundaries', () => {
     expect(result.error).toBeNull(); expect(result.data?.[0]?.stage).toBe('em_contato');
   });
   it('refuses reassignment by a corretor', async () => {
-    const result = await broker.from('leads').update({ responsible_id: users[2] }).eq('id', leads[0] ?? '');
+    const result = await broker.from('leads').update({ responsible_id: users[2] ?? '' }).eq('id', leads[0] ?? '');
     expect(result.error).not.toBeNull();
     const stored = await admin.from('leads').select('responsible_id').eq('id', leads[0] ?? '').single();
     expect(stored.data?.responsible_id).toBe(users[1]);
@@ -108,7 +108,7 @@ describe.skipIf(!enabled)('Live database access boundaries', () => {
     expect(own.error).toBeNull(); if (own.data) observations.push(own.data.id);
     const other = await broker.from('lead_observations').insert({ lead_id: leads[1] ?? '', content: 'Não permitida' });
     expect(other.error).not.toBeNull();
-    const forged = await broker.from('lead_observations').insert({ lead_id: leads[0] ?? '', author_id: users[0], content: 'Autor falso' });
+    const forged = await broker.from('lead_observations').insert({ lead_id: leads[0] ?? '', author_id: users[0] ?? '', content: 'Autor falso' });
     expect(forged.error).not.toBeNull();
   });
   it('protects anonymous leads, attendance tokens and client presence writes', async () => {
