@@ -11,7 +11,11 @@
 - [x] Etapa 4: QR Code vigente por cinco minutos, confirmação autenticada por cinco horas e fila contínua segura.
 - [x] Etapa 4: 37 testes aprovados; renovação, retorno após expiração, concorrência e fluxos de gestor/corretor verificados, incluindo troca automática do QR no navegador.
 - [x] Etapa 5: distribuição transacional por fila com histórico imutável e ação Distribuir lead no painel.
-- [ ] Etapa 5: testes de concorrência, reservatório vazio e fila vazia; validação no navegador.
-- [ ] Aguardar validação do usuário antes da Etapa 6.
+- [x] Etapa 5: 46 testes aprovados (incluindo integração no banco real) e validação de gestor/corretor no navegador.
+- [x] Deploy na Vercel: URL de produção, contas de demonstração e fluxos validados de ponta a ponta.
+- [ ] Versionamento de branches dev/hlg/prd (main = prd): criar dev e hlg, deploy de hlg na Vercel; banco único, sem versionamento por ambiente.
+- [ ] Confirmação de presença por ambiente: somente QR Code em prd; botão de confirmar presente apenas em dev/hlg (sem acesso de rede para escanear em ambiente local).
+- [ ] README completo: execução, configuração do Supabase, fluxos principais, ferramentas de IA usadas e limitações.
+- [ ] Tela de histórico de distribuição (lead, corretor e data).
 
-Etapas 6–7 permanecem fora do escopo atual. E-mails e provedores externos não foram validados integralmente.
+E-mails e provedores externos não foram validados integralmente.
