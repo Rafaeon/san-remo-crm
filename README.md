@@ -23,7 +23,7 @@ Credenciais exclusivas para o teste, sobre dados fictícios.
 - **Corretor**: confirma presença e acessa somente os próprios leads, podendo mudar a etapa e registrar observações com data.
 - **Kanban** com as seis etapas: Novo, Em contato, Visita agendada, Proposta, Ganho e Perdido. Cada lead tem nome, telefone, origem, interesse, etapa, responsável (quando atribuído) e e-mail opcional.
 - **Presença por QR Code**: código renovado a cada 5 minutos; a confirmação habilita o corretor por 5 horas; nova leitura renova sem duplicar; fila contínua (renovação preserva posição; retorno após expirar entra no fim). O gestor exibe o QR e o corretor o escaneia com a câmera do próprio celular — o código abre a página de presença do CRM, onde ele faz login pelo aparelho e confirma ali. Em `dev`/`hlg` existe ainda o botão **"Confirmar minha presença"** direto na conta do usuário (ver "Limitações da entrega").
-- **Distribuição round-robin**: cada acionamento do gestor envia o lead mais antigo do reservatório ao próximo corretor habilitado, em ordem circular. Presença expirada é ignorada; um lead já atribuído não é distribuído de novo (liberado manualmente, volta ao reservatório); o resultado aparece na tela e vai para o histórico (lead, corretor e data). O acionamento é acompanhado de uma **animação de roleta** que sorteia visualmente o corretor — a roleta é decorativa: quem recebe o lead é sempre decidido pelo round-robin determinístico no servidor.
+- **Distribuição round-robin**: cada acionamento do gestor envia o lead mais antigo do reservatório ao próximo corretor habilitado, em ordem circular. Presença expirada é ignorada; um lead já atribuído não é distribuído de novo (liberado manualmente, volta ao reservatório); o resultado aparece na tela e vai para o histórico (lead, corretor e data).
 
 ## Stack
 
@@ -113,7 +113,7 @@ Os testes de integração exigem `SUPABASE_SERVICE_ROLE_KEY` e criam/removem sua
 ## Limitações da entrega
 
 - O botão **"Confirmar minha presença"** aparece em `dev` e `hlg`, direto na conta do usuário, e é um implemento para testes: quando se testa localmente, o celular frequentemente não está na mesma rede do computador, então não consegue abrir o QR Code (que aponta para o `localhost` da máquina) e a presença ficaria impossível de confirmar na prática. Em produção, apenas o QR Code: o corretor escaneia com a câmera do celular, o código abre a página de presença do CRM e ele faz login pelo próprio aparelho, confirmando a presença por lá — como o domínio é público, o celular alcança a página sem depender da rede local.
-- Não há leitor de câmera interno para o QR: o código abre um link, como previsto no enunciado.
+- Não há animação de roleta (opcional no desafio) nem leitor de câmera interno: o QR abre um link, como previsto no enunciado.
 - O histórico de distribuição é persistido (lead, corretor e data), mas ainda não possui tela dedicada.
 - E-mails de confirmação/recuperação dependem da configuração de SMTP do Supabase; para a avaliação, use as contas de demonstração.
 - Login social não foi implementado (não exigido pelo desafio).
