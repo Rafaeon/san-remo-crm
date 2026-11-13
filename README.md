@@ -44,7 +44,7 @@ Variáveis do `.env` (o repositório nunca versiona segredos; veja `.env.example
 |---|---|---|
 | `VITE_SUPABASE_URL` e `SUPABASE_URL` | Project Settings → API → Project URL | API do Supabase (navegador e servidor) |
 | `VITE_SUPABASE_PUBLISHABLE_KEY` e `SUPABASE_PUBLISHABLE_KEY` | Project Settings → API → publishable/anon key | Chave pública, nos dois lados |
-| `VITE_APP_ENV` | livre | Rótulo visual: `dev`, `hlg` ou `prd` |
+| `VITE_APP_ENV` | livre | Ambiente: `dev`, `hlg` ou `prd`. Além do rótulo na tela, controla o botão "Confirmar minha presença": visível em `dev`/`hlg`, oculto em `prd` (só QR Code) |
 | `SUPABASE_SERVICE_ROLE_KEY` | Project Settings → API → secret key | **Somente** os testes de integração; nunca no navegador nem em `VITE_*` |
 
 ## Configurar o Supabase (recriar o banco)
@@ -73,7 +73,7 @@ Variáveis do `.env` (o repositório nunca versiona segredos; veja `.env.example
 
 1. **CRM (gestor)**: login → `/dashboard` → "Novo lead" → mover cartões no Kanban → abrir detalhes → registrar observação → "Minha conta" para editar o nome.
 2. **CRM (corretor)**: login → somente os próprios leads → alterar etapa → registrar observação.
-3. **Presença**: corretor em `/attendance` → "Confirmar minha presença" (atalho de desenvolvimento) ou escaneia o QR com a câmera do celular (o QR abre `/presence#token=...`) → passa a constar como habilitado para o gestor por 5 horas.
+3. **Presença**: corretor em `/attendance` → "Confirmar minha presença" (atalho disponível em `dev`/`hlg`) ou escaneia o QR com a câmera do celular (o QR abre `/presence#token=...`) → passa a constar como habilitado para o gestor por 5 horas.
 4. **Distribuição**: gestor clica **"Distribuir lead"** → o lead mais antigo sem responsável vai ao primeiro corretor habilitado da fila → feedback na tela e histórico gravado.
 5. **Segurança**: sem login, `/dashboard` redireciona para `/auth`; corretor não enxerga leads alheios e ninguém escreve por cliente em histórico, fila ou papéis (RLS e triggers no banco).
 
@@ -91,7 +91,7 @@ Decisões de segurança: papéis apenas em `user_roles` (tabela protegida), nunc
 
 ```bash
 npm run test                                    # 16 testes unitários
-RUN_SECURITY_INTEGRATION=1 npm run test         # suíte completa: 46 testes, incluindo 30 de integração
+RUN_SECURITY_INTEGRATION=1 npm run test         # suíte completa: 51 testes, incluindo 34 de integração
 ```
 
 (No PowerShell: `$env:RUN_SECURITY_INTEGRATION='1'; npm run test`.)
@@ -105,16 +105,16 @@ Os testes de integração exigem `SUPABASE_SERVICE_ROLE_KEY` e criam/removem sua
 | **Lovable** (lovable.dev) | Análise inicial do desafio, arquitetura e implementação das Etapas 1–4 (autenticação, perfis/RLS, CRM e presença), migrations e primeiros testes |
 | **MiMoCode** (Claude, Anthropic) | Continuação do projeto: migração para um Supabase próprio, Etapa 5 (distribuição), ajuste do fluxo de QR, deploy na Vercel, testes de integração e documentação |
 
-**Como o resultado foi conferido:** suíte de 46 testes automatizados (30 deles executados contra o banco real), validação manual ponta a ponta em desktop e celular — login, CRUD de leads, presença por QR e distribuição — no ambiente de produção, além de revisão de cada mudança gerada. A fotografia da tela de login é gerada por IA e não representa um imóvel real.
+**Como o resultado foi conferido:** suíte de 51 testes automatizados (34 deles executados contra o banco real), validação manual ponta a ponta em desktop e celular — login, CRUD de leads, presença por QR e distribuição — no ambiente de produção, além de revisão de cada mudança gerada. A fotografia da tela de login é gerada por IA e não representa um imóvel real.
 
 ## Limitações da entrega
 
-- O botão **"Confirmar minha presença"** está visível em todos os ambientes; a intenção é mantê-lo apenas em dev/hlg (em produção, somente confirmação por QR — o domínio público permite escanear).
+- O botão **"Confirmar minha presença"** aparece apenas em `dev` e `hlg` (atalho para quando o celular não alcança o servidor local); em produção, somente confirmação por QR Code — o domínio público permite escanear.
 - Não há animação de roleta (opcional no desafio) nem leitor de câmera interno: o QR abre um link, como previsto no enunciado.
 - O histórico de distribuição é persistido (lead, corretor e data), mas ainda não possui tela dedicada.
 - E-mails de confirmação/recuperação dependem da configuração de SMTP do Supabase; para a avaliação, use as contas de demonstração.
 - Login social não foi implementado (não exigido pelo desafio).
-- Banco único para todos os ambientes (sem isolamento dev/hlg/prd); branches `dev` e `hlg`, com deploy de homologação na Vercel, estão planejadas.
+- Banco único para todos os ambientes (sem isolamento dev/hlg/prd). Branches: `main` = produção (prd), `hlg` = homologação (deploy de preview na Vercel) e `dev` = desenvolvimento local; o comportamento por ambiente é definido por `VITE_APP_ENV`.
 
 ## Documentação por etapa
 
