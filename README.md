@@ -2,8 +2,11 @@
 
 MVP de CRM imobiliário para o desafio técnico da **San Remo Imóveis**: gestão de leads em Kanban, presença da equipe por QR Code e distribuição round-robin de leads entre corretores.
 
-- **Produção:** https://crm-san-remo.vercel.app
+- **Produção (prd):** https://crm-san-remo.vercel.app
+- **Homologação (hlg):** https://crm-san-remo-git-hlg-rafaels-projects-d01eb788.vercel.app (branch `hlg`, deploy de preview)
 - **Repositório:** https://github.com/Rafaeon/pixel-perfect-replica (deploy automático a cada push em `main`)
+
+A homologação fica aberta sem login para que recrutadores e avaliadores possam navegar os dois ambientes e ver o versionamento (branch `hlg` → homologação, branch `main` → produção). **Em um ambiente de trabalho real, o Deployment Protection da Vercel ficaria habilitado** (Project Settings → Deployment Protection), exigindo autenticação para abrir deploys de preview; aqui ele foi desativado por ser um sistema de teste/demonstração.
 
 ## Contas de demonstração
 
@@ -19,7 +22,7 @@ Credenciais exclusivas para o teste, sobre dados fictícios.
 - **Gestor**: enxerga todos os leads, cadastra e edita contatos, consulta o reservatório (leads sem responsável), aciona a distribuição, acompanha quem está habilitado (presença) e configura os papéis da equipe (define gestores e corretores, com perfil e e-mail de cada conta).
 - **Corretor**: confirma presença e acessa somente os próprios leads, podendo mudar a etapa e registrar observações com data.
 - **Kanban** com as seis etapas: Novo, Em contato, Visita agendada, Proposta, Ganho e Perdido. Cada lead tem nome, telefone, origem, interesse, etapa, responsável (quando atribuído) e e-mail opcional.
-- **Presença por QR Code**: código renovado a cada 5 minutos; a confirmação habilita o corretor por 5 horas; nova leitura renova sem duplicar; fila contínua (renovação preserva posição; retorno após expirar entra no fim).
+- **Presença por QR Code**: código renovado a cada 5 minutos; a confirmação habilita o corretor por 5 horas; nova leitura renova sem duplicar; fila contínua (renovação preserva posição; retorno após expirar entra no fim). O gestor exibe o QR e o corretor o escaneia com a câmera do próprio celular — o código abre a página de presença do CRM, onde ele faz login pelo aparelho e confirma ali. Em `dev`/`hlg` existe ainda o botão **"Confirmar minha presença"** direto na conta do usuário (ver "Limitações da entrega").
 - **Distribuição round-robin**: cada acionamento do gestor envia o lead mais antigo do reservatório ao próximo corretor habilitado, em ordem circular. Presença expirada é ignorada; um lead já atribuído não é distribuído de novo (liberado manualmente, volta ao reservatório); o resultado aparece na tela e vai para o histórico (lead, corretor e data).
 
 ## Stack
@@ -109,7 +112,7 @@ Os testes de integração exigem `SUPABASE_SERVICE_ROLE_KEY` e criam/removem sua
 
 ## Limitações da entrega
 
-- O botão **"Confirmar minha presença"** aparece apenas em `dev` e `hlg` (atalho para quando o celular não alcança o servidor local); em produção, somente confirmação por QR Code — o domínio público permite escanear.
+- O botão **"Confirmar minha presença"** aparece em `dev` e `hlg`, direto na conta do usuário, e é um implemento para testes: quando se testa localmente, o celular frequentemente não está na mesma rede do computador, então não consegue abrir o QR Code (que aponta para o `localhost` da máquina) e a presença ficaria impossível de confirmar na prática. Em produção, apenas o QR Code: o corretor escaneia com a câmera do celular, o código abre a página de presença do CRM e ele faz login pelo próprio aparelho, confirmando a presença por lá — como o domínio é público, o celular alcança a página sem depender da rede local.
 - Não há animação de roleta (opcional no desafio) nem leitor de câmera interno: o QR abre um link, como previsto no enunciado.
 - O histórico de distribuição é persistido (lead, corretor e data), mas ainda não possui tela dedicada.
 - E-mails de confirmação/recuperação dependem da configuração de SMTP do Supabase; para a avaliação, use as contas de demonstração.
