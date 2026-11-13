@@ -4,10 +4,10 @@ Etapa 4 validada. A distribuição segue o desenho aprovado em `docs/fundacao.md
 
 ## Regras implementadas
 
-- `distribute_next_lead()` seleciona, em uma única transação: o lead sem responsável mais antigo que nunca foi distribuído (histórico único por lead) e o primeiro corretor da fila com presença válida e papel ativo.
+- `distribute_next_lead()` seleciona, em uma única transação: o lead sem responsável mais antigo (desempate por UUID) e o primeiro corretor da fila com presença válida e papel ativo. Liberação manual devolve o lead ao pool.
 - O corretor atendido vai para o fim da fila contínua; a próxima chamada atende o seguinte. Renovações de presença continuam sem alterar posição.
 - Erros distintos: reservatório vazio (`P0002`), fila sem corretor habilitado (`22023`) e quem não é gestor (`42501`).
-- Histórico gravado com operação única (`operation_id`), autor da distribuição e relógio do banco. Clientes não inserem, alteram nem excluem histórico; o registro impede que o mesmo lead seja distribuído duas vezes, mesmo após liberação manual pelo gestor.
+- Histórico imutável com um registro por entrega (`operation_id` único), autor da distribuição e relógio do banco. Clientes não inserem, alteram nem excluem; um lead já atribuído não é distribuído de novo — liberação manual devolve-o ao pool, e cada entrega gera seu próprio registro.
 - A atribuição manual pelo formulário continua disponível e não dispara distribuição automática.
 
 ## Interface
@@ -27,7 +27,7 @@ Atualizados: `src/services/crm.functions.ts`, `src/components/crm/crm-board.tsx`
 
 A suíte de integração opt-in (`RUN_SECURITY_INTEGRATION=1`) cobre: recusa a não gestores, reservatório vazio, fila vazia, atribuição do mais antigo com desempate por UUID, rotação da fila, salto de presença expirada, bloqueio de redistribuição, concorrência entre dois gestores e imutabilidade do histórico. Os casos destrutivos só executam com fila e reservatório livres de dados reais, para não alterar registros de demonstração; caso contrário pulam com aviso.
 
-Validação no navegador pendente: distribuir leads do reservatório com dois corretores presentes e conferir a ordem de atendimento; liberar manualmente um lead distribuído e confirmar que ele não retorna à distribuição automática.
+Validação no navegador pendente: distribuir leads do reservatório com dois corretores presentes e conferir a ordem de atendimento; liberar manualmente um lead distribuído e confirmar que ele volta ao pool para o próximo corretor.
 
 ## Pendências
 

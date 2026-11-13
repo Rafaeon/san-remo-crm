@@ -303,6 +303,13 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      assign_user_role: {
+        Args: {
+          p_role: Database["public"]["Enums"]["app_role"] | null
+          p_user_id: string
+        }
+        Returns: undefined
+      }
       confirm_broker_attendance: {
         Args: { p_token: string }
         Returns: {

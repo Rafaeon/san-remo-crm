@@ -72,9 +72,34 @@ export const getLeadDetail = createServerFn({ method: 'GET' }).middleware([requi
     }
     return { lead: lead.data, observations };
   });
+export const getDistributionHistory = createServerFn({ method: 'GET' }).middleware([requireSupabaseAuth]).handler(async ({ context }) => {
+  const role = await roleOf(context.supabase, context.userId);
+  if (role !== 'gestor') throw new Error('Apenas gestores podem consultar o histórico de distribuição.');
+  const rows: { operation_id: string; lead_id: string; broker_id: string; distributed_at: string }[] = [];
+  // Paginate every read instead of silently losing rows at the Data API limit.
+  for (let offset = 0; ; offset += 500) {
+    const result = await context.supabase.from('lead_distribution_history').select('operation_id,lead_id,broker_id,distributed_at').order('distributed_at', { ascending: false }).order('id', { ascending: false }).range(offset, offset + 499);
+    if (result.error) throw new Error('Não foi possível carregar o histórico.');
+    rows.push(...result.data); if (result.data.length < 500) break;
+  }
+  const names = new Map<string, string>();
+  const leadIds = [...new Set(rows.map(row => row.lead_id))];
+  const brokerIds = [...new Set(rows.map(row => row.broker_id))];
+  if (leadIds.length) {
+    const leads = await context.supabase.from('leads').select('id,name').in('id', leadIds);
+    if (leads.error) throw new Error('Não foi possível carregar os leads do histórico.');
+    leads.data.forEach(row => names.set(row.id, row.name));
+  }
+  if (brokerIds.length) {
+    const brokers = await context.supabase.from('profiles').select('id,display_name').in('id', brokerIds);
+    if (brokers.error) throw new Error('Não foi possível carregar os corretores do histórico.');
+    brokers.data.forEach(row => names.set(row.id, row.display_name));
+  }
+  return rows.map(row => ({ operation_id: row.operation_id, lead_id: row.lead_id, lead_name: names.get(row.lead_id) ?? 'Lead', broker_name: names.get(row.broker_id) ?? 'Corretor', distributed_at: row.distributed_at }));
+});
 export const distributeNextLead = createServerFn({ method: 'POST' }).middleware([requireSupabaseAuth]).handler(async ({ context }) => {
   const result = await context.supabase.rpc('distribute_next_lead').single();
-  if (result.error) throw new Error(result.error.code === '42501' ? 'Apenas gestores podem distribuir leads.' : result.error.code === 'P0002' ? 'Nenhum lead disponível para distribuição.' : result.error.code === '22023' ? 'Nenhum corretor disponível na fila de presença.' : 'Não foi possível distribuir o lead. Tente novamente.');
+  if (result.error) throw new Error(result.error.code === '42501' ? 'Apenas gestores podem distribuir leads.' : result.error.code === 'P0002' || result.error.code === '22023' ? result.error.message : 'Não foi possível distribuir o lead. Tente novamente.');
   return result.data;
 });
 export const addObservation = createServerFn({ method: 'POST' }).middleware([requireSupabaseAuth])

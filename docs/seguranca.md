@@ -22,7 +22,7 @@ Todas as oito tabelas têm RLS. Privilégios foram explicitamente concedidos e p
 
 O verificador de banco informa duas condições intencionais: tokens com RLS e nenhuma política de cliente (bloqueados), e execução autenticada do helper SECURITY DEFINER (necessária às políticas de leitura). Não são apresentadas como prova de segurança total; os testes abaixo validam comportamentos concretos.
 
-Nenhum usuário real recebeu privilégios automaticamente. Para liberar gestor/corretor, um operador autorizado deve provisionar o registro em user_roles pelo canal administrativo; não há botão de autopromoção ou criação de gestor no cadastro. Um papel gestor também não ganha permissão para conceder papéis pelo navegador. A definição de quem será o primeiro gestor deve ser explicitamente fornecida pelo responsável do projeto.
+Nenhum usuário real recebeu privilégios automaticamente. Para liberar gestor/corretor, um operador autorizado deve provisionar o registro em user_roles pelo canal administrativo; não há botão de autopromoção ou criação de gestor no cadastro. Um papel gestor também não ganha permissão para conceder papéis pelo navegador. Atualização posterior (gestão de usuários): o gestor atribui e remove os papéis gestor e corretor de terceiros pela tela Equipe, via RPC restrita; a alteração do próprio papel continua bloqueada — o último gestor não consegue se rebaixar. A definição de quem será o primeiro gestor deve ser explicitamente fornecida pelo responsável do projeto.
 
 ## Interface entregue
 

@@ -172,17 +172,16 @@ describe.skipIf(process.env['RUN_SECURITY_INTEGRATION'] !== '1')('Live lead dist
     expect(result.data?.broker_id).toBe(brokerId);
   });
 
-  it('never distributes the same lead twice, even after manual reassignment', async () => {
+  it('returns a manually freed lead to the pool and logs every distribution', async () => {
     if (!ready) return;
     const leadD = leadIds[3]!;
     const freed = await admin.from('leads').update({ responsible_id: null }).eq('id', leadD);
     expect(freed.error).toBeNull();
-    const leadE = await seedLead('Lead seguinte', '2000-01-01T03:00:00Z');
     const result = await manager.rpc('distribute_next_lead').single();
     expect(result.error).toBeNull();
-    expect(result.data?.lead_id).toBe(leadE);
+    expect(result.data?.lead_id).toBe(leadD);
     const history = await admin.from('lead_distribution_history').select('id').eq('lead_id', leadD);
-    expect(history.data).toHaveLength(1);
+    expect(history.data).toHaveLength(2);
   });
 
   it('serializes concurrent gestores without duplicating leads or brokers', async () => {

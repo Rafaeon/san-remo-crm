@@ -16,11 +16,11 @@ Credenciais exclusivas para o teste, sobre dados fictícios.
 
 ## O que o sistema faz
 
-- **Gestor**: enxerga todos os leads, cadastra e edita contatos, consulta o reservatório (leads sem responsável), aciona a distribuição e acompanha quem está habilitado.
+- **Gestor**: enxerga todos os leads, cadastra e edita contatos, consulta o reservatório (leads sem responsável), aciona a distribuição, acompanha quem está habilitado (presença) e configura os papéis da equipe (define gestores e corretores, com perfil e e-mail de cada conta).
 - **Corretor**: confirma presença e acessa somente os próprios leads, podendo mudar a etapa e registrar observações com data.
 - **Kanban** com as seis etapas: Novo, Em contato, Visita agendada, Proposta, Ganho e Perdido. Cada lead tem nome, telefone, origem, interesse, etapa, responsável (quando atribuído) e e-mail opcional.
 - **Presença por QR Code**: código renovado a cada 5 minutos; a confirmação habilita o corretor por 5 horas; nova leitura renova sem duplicar; fila contínua (renovação preserva posição; retorno após expirar entra no fim).
-- **Distribuição round-robin**: cada acionamento do gestor envia o lead mais antigo do reservatório ao próximo corretor habilitado, em ordem circular. Presença expirada é ignorada; o mesmo lead nunca é distribuído duas vezes; o resultado aparece na tela e vai para o histórico (lead, corretor e data).
+- **Distribuição round-robin**: cada acionamento do gestor envia o lead mais antigo do reservatório ao próximo corretor habilitado, em ordem circular. Presença expirada é ignorada; um lead já atribuído não é distribuído de novo (liberado manualmente, volta ao reservatório); o resultado aparece na tela e vai para o histórico (lead, corretor e data).
 
 ## Stack
 
