@@ -17,6 +17,6 @@
 - [x] Versionamento de branches dev/hlg/prd (main = prd): branches `dev` e `hlg` criadas, deploy de homologação na Vercel (preview da branch `hlg`); banco único, sem versionamento por ambiente.
 - [x] Confirmação de presença por ambiente: somente QR Code em prd; botão de confirmar presença apenas em dev/hlg (gate `VITE_APP_ENV` em `src/lib/app-config.ts`).
 - [x] README completo: execução, configuração do Supabase, fluxos principais, ferramentas de IA usadas e limitações.
-- [ ] Animação de roleta na distribuição de leads (opcional no desafio).
+- [x] Animação de roleta na distribuição de leads (opcional no desafio) — tentada em 2026-11-14 e revertida: o modal não animava e ficava preso em carregamento (o loop de animação não iniciava porque o conteúdo do Dialog monta depois do efeito). Decisão: finalizar o sistema com a distribuição round-robin pura.
 
 E-mails e provedores externos não foram validados integralmente.
