@@ -35,7 +35,7 @@ export const getAttendance = createServerFn({ method: 'GET' }).middleware([requi
 });
 export const getAttendanceQr = createServerFn({ method: 'POST' }).middleware([requireSupabaseAuth]).handler(async ({ context }) => {
   const result = await context.supabase.rpc('current_attendance_qr').single();
-  if (result.error) throw new Error('Não foi possível carregar o QR Code. Acesso exclusivo de gestores.');
+  if (result.error) throw new Error('Não foi possível carregar o QR Code. Tente novamente.');
   return result.data;
 });
 export const confirmAttendance = createServerFn({ method: 'POST' }).middleware([requireSupabaseAuth])
