@@ -1,29 +1,125 @@
-# San Remo CRM
+# San Remo CRM — CRM e Roleta de Leads
 
-CRM imobiliário para San Remo Imóveis. **Etapas 1–4 implementadas; Etapa 5 aguarda validação.**
+MVP de CRM imobiliário para o desafio técnico da **San Remo Imóveis**: gestão de leads em Kanban, presença da equipe por QR Code e distribuição round-robin de leads entre corretores.
 
-React 19, TypeScript, TanStack Start, Vite, Tailwind v4 e Lovable Cloud.
+- **Produção:** https://crm-san-remo.vercel.app
+- **Repositório:** https://github.com/Rafaeon/pixel-perfect-replica (deploy automático a cada push em `main`)
+
+## Contas de demonstração
+
+| Perfil | E-mail | Senha |
+|---|---|---|
+| Gestor | `gestor.demo@sanremoimobiliaria.com.br` | `SanRemo@2026` |
+| Corretor | `corretor.demo@sanremoimobiliaria.com.br` | `SanRemo@2026` |
+
+Credenciais exclusivas para o teste, sobre dados fictícios.
+
+## O que o sistema faz
+
+- **Gestor**: enxerga todos os leads, cadastra e edita contatos, consulta o reservatório (leads sem responsável), aciona a distribuição e acompanha quem está habilitado.
+- **Corretor**: confirma presença e acessa somente os próprios leads, podendo mudar a etapa e registrar observações com data.
+- **Kanban** com as seis etapas: Novo, Em contato, Visita agendada, Proposta, Ganho e Perdido. Cada lead tem nome, telefone, origem, interesse, etapa, responsável (quando atribuído) e e-mail opcional.
+- **Presença por QR Code**: código renovado a cada 5 minutos; a confirmação habilita o corretor por 5 horas; nova leitura renova sem duplicar; fila contínua (renovação preserva posição; retorno após expirar entra no fim).
+- **Distribuição round-robin**: cada acionamento do gestor envia o lead mais antigo do reservatório ao próximo corretor habilitado, em ordem circular. Presença expirada é ignorada; o mesmo lead nunca é distribuído duas vezes; o resultado aparece na tela e vai para o histórico (lead, corretor e data).
+
+## Stack
+
+React 19 · TypeScript · TanStack Start (rotas e funções de servidor) · Vite · Tailwind CSS v4 · Radix UI · TanStack Query · Supabase (PostgreSQL + Auth) · Vitest · Vercel.
 
 ## Executar localmente
 
-Instalar Bun e Node compatível com Vite. Executar `bun install`, copiar `.env.example` para `.env` e configurar os valores públicos do ambiente de desenvolvimento. Executar `bun run dev`; testes: `bun run test`. Não substituir o `.env` gerado dentro do Lovable.
+Pré-requisitos: **Node.js 22.12+** (ou Bun) e um projeto Supabase (ver seção seguinte).
 
-## Documentação
+```bash
+git clone https://github.com/Rafaeon/pixel-perfect-replica
+cd pixel-perfect-replica
+npm install           # ou: bun install
+cp .env.example .env  # preencher com as chaves do seu projeto Supabase
+npm run dev           # http://localhost:8080
+```
 
-Ver [análise, modelagem proposta, arquivos, configurações, pendências e validação](docs/fundacao.md).
-Ver [estrutura aplicada, segurança e testes da Etapa 2](docs/seguranca.md).
-Ver [CRM, arquivos e validação da Etapa 3](docs/crm.md).
-Ver [presença por QR Code da Etapa 4](docs/presenca.md).
-Ver [distribuição de leads da Etapa 5](docs/distribuicao.md).
+Variáveis do `.env` (o repositório nunca versiona segredos; veja `.env.example`):
 
-CRM com painel, Kanban, cadastro/edição, detalhes, observações, reservatório, presença por QR Code e distribuição de leads por fila (RPC transacional). Estrutura protegida por RLS e migrations versionadas. Novas contas ficam sem papel; a conta atual recebeu gestor somente após autorização explícita.
+| Variável | Onde encontrar | Uso |
+|---|---|---|
+| `VITE_SUPABASE_URL` e `SUPABASE_URL` | Project Settings → API → Project URL | API do Supabase (navegador e servidor) |
+| `VITE_SUPABASE_PUBLISHABLE_KEY` e `SUPABASE_PUBLISHABLE_KEY` | Project Settings → API → publishable/anon key | Chave pública, nos dois lados |
+| `VITE_APP_ENV` | livre | Rótulo visual: `dev`, `hlg` ou `prd` |
+| `SUPABASE_SERVICE_ROLE_KEY` | Project Settings → API → secret key | **Somente** os testes de integração; nunca no navegador nem em `VITE_*` |
 
-## Ambientes e publicação
+## Configurar o Supabase (recriar o banco)
 
-GitHub: conectar em Settings → Git; branches e promoção dev → hlg → prd dependem da configuração do repositório. Lovable não conecta um repositório existente por Git sync. Cada implantação deve usar seu próprio banco e variáveis. O Cloud conectado hoje é único e compartilhado por preview/publicação; o rótulo DEV não garante isolamento.
+1. Criar um projeto em [supabase.com](https://supabase.com) (região mais próxima).
+2. Aplicar as migrations **nesta ordem** (SQL Editor do painel, ou `psql`/cliente SQL pelo *Session pooler*):
 
-Vercel não foi configurada. A aplicação TanStack Start requer validação do adaptador/runtime e saída de build antes de configurar os projetos HLG e PRD. Não usar instruções de deploy de uma SPA estática como se fossem equivalentes. Não há publicação ou ambientes externos verificados.
+   | Arquivo | Conteúdo |
+   |---|---|
+   | `drizzle/migrations/0000_san_remo_profiles_roles_and_crm_security.sql` | Tabelas, papéis, RLS, triggers de perfil e proteção de campos |
+   | `drizzle/migrations/0001_explicitly_restrict_anon_and_internal_writes.sql` | Privilégios: escrita direta bloqueada para clientes |
+   | `drizzle/migrations/0002_secure_qr_attendance_and_continuous_queue.sql` | RPCs de presença (QR rotativo e fila contínua) |
+   | `drizzle/migrations/0003_transactional_lead_distribution.sql` | RPC de distribuição round-robin + histórico |
+   | `drizzle/migrations/0004_share_attendance_qr_with_brokers.sql` | QR de presença exibido para gestores e corretores |
 
-## IA
+3. Em **Authentication → URL Configuration**, liberar `http://localhost:8080/**` e a URL pública (Vercel).
+4. Criar as contas de uso e provisionar os papéis — **novas contas nascem sem papel**, por segurança. O papel é atribuído em `user_roles` por um administrador:
 
-Lovable auxiliou análise, implementação e testes. A imagem residencial foi gerada por IA e não representa imóvel real. Revisão e limitações constam em `docs/fundacao.md`.
+   ```sql
+   INSERT INTO public.user_roles (user_id, role) VALUES ('<uuid-do-usuario>', 'corretor'); -- ou 'gestor'
+   ```
+
+> A conexão direta do banco (`db.<projeto>.supabase.co`) é IPv6-only; em máquinas sem IPv6, use o **Session pooler** (Settings → Database → Connection string).
+
+## Reproduzir os principais fluxos
+
+1. **CRM (gestor)**: login → `/dashboard` → "Novo lead" → mover cartões no Kanban → abrir detalhes → registrar observação → "Minha conta" para editar o nome.
+2. **CRM (corretor)**: login → somente os próprios leads → alterar etapa → registrar observação.
+3. **Presença**: corretor em `/attendance` → "Confirmar minha presença" (atalho de desenvolvimento) ou escaneia o QR com a câmera do celular (o QR abre `/presence#token=...`) → passa a constar como habilitado para o gestor por 5 horas.
+4. **Distribuição**: gestor clica **"Distribuir lead"** → o lead mais antigo sem responsável vai ao primeiro corretor habilitado da fila → feedback na tela e histórico gravado.
+5. **Segurança**: sem login, `/dashboard` redireciona para `/auth`; corretor não enxerga leads alheios e ninguém escreve por cliente em histórico, fila ou papéis (RLS e triggers no banco).
+
+## Como o código está organizado
+
+- `src/routes` — páginas com TanStack file routing; área logada sob `_authenticated`, com validação de sessão no servidor.
+- `src/components` — interface (identidade San Remo, Kanban, presença, formulários).
+- `src/services` — funções de servidor autenticadas: **único** caminho de leitura e escrita de dados, sempre com a sessão do usuário (sem cliente administrativo no fluxo normal).
+- `drizzle/migrations` — schema completo do banco; todas as tabelas com RLS, e as operações de presença/distribuição como RPCs transacionais (compartilham o mesmo advisory lock de concorrência).
+- `src/test` — testes unitários e de integração.
+
+Decisões de segurança: papéis apenas em `user_roles` (tabela protegida), nunca em metadados editáveis; triggers impedem a alteração de campos sensíveis dos leads por corretores; o histórico de distribuição é imutável e único por lead.
+
+## Testes
+
+```bash
+npm run test                                    # 16 testes unitários
+RUN_SECURITY_INTEGRATION=1 npm run test         # suíte completa: 46 testes, incluindo 30 de integração
+```
+
+(No PowerShell: `$env:RUN_SECURITY_INTEGRATION='1'; npm run test`.)
+
+Os testes de integração exigem `SUPABASE_SERVICE_ROLE_KEY` e criam/removem suas próprias contas fictícias — nunca tocam em dados de demonstração.
+
+## Ferramentas de IA no desenvolvimento
+
+| Ferramenta | Onde ajudou |
+|---|---|
+| **Lovable** (lovable.dev) | Análise inicial do desafio, arquitetura e implementação das Etapas 1–4 (autenticação, perfis/RLS, CRM e presença), migrations e primeiros testes |
+| **MiMoCode** (Claude, Anthropic) | Continuação do projeto: migração para um Supabase próprio, Etapa 5 (distribuição), ajuste do fluxo de QR, deploy na Vercel, testes de integração e documentação |
+
+**Como o resultado foi conferido:** suíte de 46 testes automatizados (30 deles executados contra o banco real), validação manual ponta a ponta em desktop e celular — login, CRUD de leads, presença por QR e distribuição — no ambiente de produção, além de revisão de cada mudança gerada. A fotografia da tela de login é gerada por IA e não representa um imóvel real.
+
+## Limitações da entrega
+
+- O botão **"Confirmar minha presença"** está visível em todos os ambientes; a intenção é mantê-lo apenas em dev/hlg (em produção, somente confirmação por QR — o domínio público permite escanear).
+- Não há animação de roleta (opcional no desafio) nem leitor de câmera interno: o QR abre um link, como previsto no enunciado.
+- O histórico de distribuição é persistido (lead, corretor e data), mas ainda não possui tela dedicada.
+- E-mails de confirmação/recuperação dependem da configuração de SMTP do Supabase; para a avaliação, use as contas de demonstração.
+- Login social não foi implementado (não exigido pelo desafio).
+- Banco único para todos os ambientes (sem isolamento dev/hlg/prd); branches `dev` e `hlg`, com deploy de homologação na Vercel, estão planejadas.
+
+## Documentação por etapa
+
+- [Fundação e análise inicial](docs/fundacao.md)
+- [Segurança e banco (Etapa 2)](docs/seguranca.md)
+- [CRM (Etapa 3)](docs/crm.md)
+- [Presença (Etapa 4)](docs/presenca.md)
+- [Distribuição (Etapa 5)](docs/distribuicao.md)
