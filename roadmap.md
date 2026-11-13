@@ -14,9 +14,9 @@
 - [x] Etapa 5: 46 testes aprovados (incluindo integração no banco real) e validação de gestor/corretor no navegador.
 - [x] Deploy na Vercel: URL de produção, contas de demonstração e fluxos validados de ponta a ponta.
 - [x] Tela de histórico de distribuição (lead, corretor e data) e configuração de usuários: gestor define gestores e corretores pela tela Equipe, com perfil e e-mail da conta (próprio papel protegido).
-- [ ] Versionamento de branches dev/hlg/prd (main = prd): criar dev e hlg, deploy de hlg na Vercel; banco único, sem versionamento por ambiente.
-- [ ] Confirmação de presença por ambiente: somente QR Code em prd; botão de confirmar presente apenas em dev/hlg (sem acesso de rede para escanear em ambiente local).
-- [ ] README completo: execução, configuração do Supabase, fluxos principais, ferramentas de IA usadas e limitações.
-- [ ] Tela de histórico de distribuição (lead, corretor e data).
+- [x] Versionamento de branches dev/hlg/prd (main = prd): branches `dev` e `hlg` criadas, deploy de homologação na Vercel (preview da branch `hlg`); banco único, sem versionamento por ambiente.
+- [x] Confirmação de presença por ambiente: somente QR Code em prd; botão de confirmar presença apenas em dev/hlg (gate `VITE_APP_ENV` em `src/lib/app-config.ts`).
+- [x] README completo: execução, configuração do Supabase, fluxos principais, ferramentas de IA usadas e limitações.
+- [ ] Animação de roleta na distribuição de leads (opcional no desafio).
 
 E-mails e provedores externos não foram validados integralmente.
