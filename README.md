@@ -4,7 +4,7 @@ MVP de CRM imobiliário para o desafio técnico da **San Remo Imóveis**: gestã
 
 - **Produção (prd):** https://crm-san-remo.vercel.app
 - **Homologação (hlg):** https://crm-san-remo-git-hlg-rafaels-projects-d01eb788.vercel.app (branch `hlg`, deploy de preview)
-- **Repositório:** https://github.com/Rafaeon/pixel-perfect-replica (deploy automático a cada push em `main`)
+- **Repositório:** https://github.com/Rafaeon/san-remo-crm (deploy automático a cada push em `main`)
 
 A homologação fica aberta sem login para que recrutadores e avaliadores possam navegar os dois ambientes e ver o versionamento (branch `hlg` → homologação, branch `main` → produção). **Em um ambiente de trabalho real, o Deployment Protection da Vercel ficaria habilitado** (Project Settings → Deployment Protection), exigindo autenticação para abrir deploys de preview; aqui ele foi desativado por ser um sistema de teste/demonstração.
 
@@ -34,8 +34,8 @@ React 19 · TypeScript · TanStack Start (rotas e funções de servidor) · Vite
 Pré-requisitos: **Node.js 22.12+** (ou Bun) e um projeto Supabase (ver seção seguinte).
 
 ```bash
-git clone https://github.com/Rafaeon/pixel-perfect-replica
-cd pixel-perfect-replica
+git clone https://github.com/Rafaeon/san-remo-crm
+cd san-remo-crm
 npm install           # ou: bun install
 cp .env.example .env  # preencher com as chaves do seu projeto Supabase
 npm run dev           # http://localhost:8080
