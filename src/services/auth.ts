@@ -16,6 +16,7 @@ export function authErrorMessage(error: unknown) {
   if (message.includes('Invalid login')) return 'E-mail ou senha incorretos. Verifique e tente novamente.';
   if (message.includes('Email not confirmed')) return 'Confirme seu e-mail antes de entrar.';
   if (message.includes('email address is not allowed')) return 'Use um e-mail válido que possa receber a confirmação de cadastro.';
+  if (message.includes('email rate limit exceeded')) return 'O Supabase no plano gratuito envia apenas 2 e-mails por hora (confirmação e redefinição contam juntas). Aguarde alguns minutos e tente novamente, ou use uma conta de demonstração.';
   if (/rate[ _]limit|too many|for security purposes/i.test(message)) return 'Muitas tentativas. Aguarde alguns minutos e tente novamente.';
   return 'Não foi possível concluir. Tente novamente em instantes.';
 }
